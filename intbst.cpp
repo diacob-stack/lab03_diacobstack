@@ -50,14 +50,16 @@ bool IntBST::insert(int value, Node *n) {
 			return insert(value, n->left);
 		} else {
         	        n->left = new Node(value);
-                	return true;
+                	n->left->parent = n;
+			return true;
         	}
 	} else {
                 if(n->right) {
 			return insert(value, n->right);
 		} else {
         	        n->right = new Node(value);
-                	return true;
+                	n->right->parent = n;
+			return true;
         	}
 	}
 }
@@ -156,26 +158,6 @@ bool IntBST::contains(int value) const {
 
 // returns the Node containing the predecessor of the given value
 IntBST::Node* IntBST::getPredecessorNode(int value) const{
-    	/*
-	Node* n = getNodeFor(value, root);
-	if(!n) {
-		return nullptr;
-	}
-	vector<int> list;
-	getPredecessorNode(value, n, list);
-	int spot = -1;
-	for(int i = 0; i < list.size(); i++){
-		if(list[i] == value){
-			spot = i;
-			break;
-		}
-	}
-	if(spot > 0){
-		return getNodeFor(list[spot - 1], root);
-	} else{
-		return nullptr;
-	}
-	*/
 	Node* n = getNodeFor(value, root);
 	if (!n){
 		return nullptr;
@@ -194,16 +176,6 @@ IntBST::Node* IntBST::getPredecessorNode(int value) const{
 	}
 	return par;
 }
-/*
-void IntBST::getPredecessorNode(int value, Node* n, vector<int> &list) const{
-	if(!n){
-		return;
-	}
-	getPredecessorNode(value, n->left, list);
-	list.push_back(n->info);
-	getPredecessorNode(value, n->right, list);
-}
-*/
 // returns the predecessor value of the given value or 0 if there is none
 int IntBST::getPredecessor(int value) const{
 	Node* pred = getPredecessorNode(value);
