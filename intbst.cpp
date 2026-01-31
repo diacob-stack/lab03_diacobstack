@@ -243,7 +243,7 @@ bool IntBST::remove(int value){
 	Node* b = temp;
 
 	if(b->parent != a){
-		replace(a, a->right);
+		replace(b, b->right);
 		b->right = a->right;
 		b->right->parent = b;
 	}
@@ -265,6 +265,6 @@ void IntBST::replace(Node* c, Node* d) {
 		c->parent->right = d;
 	}
 	if(d != nullptr){
-		d->parent = d->parent;
+		d->parent = c->parent;
 	}
 }
