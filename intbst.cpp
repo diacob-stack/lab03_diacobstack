@@ -127,7 +127,7 @@ int IntBST::count(Node *n) const {
 	if(!n) {
                 return 0;
         }
-        return 1 + sum(n->left) + sum(n->right);
+        return 1 + count(n->left) + count(n->right);
 }
 
 // IMPLEMENT THIS FIRST: returns the node for a given value or NULL if none exists
