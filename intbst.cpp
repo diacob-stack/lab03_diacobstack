@@ -140,7 +140,7 @@ IntBST::Node* IntBST::getNodeFor(int value, Node* n) const{
 	if(!n) {
                 return nullptr;
         }
-	if(n->info = value) {
+	if(n->info == value) {
 		return n;
 	} else if(value < n->info) {
 		return getNodeFor(value, n->left);
@@ -151,7 +151,7 @@ IntBST::Node* IntBST::getNodeFor(int value, Node* n) const{
 
 // returns true if value is in the tree; false if not
 bool IntBST::contains(int value) const {
-	return getNodeFor(value, root);
+	return getNodeFor(value, root) != nullptr;
 }
 
 // returns the Node containing the predecessor of the given value
