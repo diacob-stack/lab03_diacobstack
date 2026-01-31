@@ -50,6 +50,7 @@ class IntBST {
     void printPostOrder(Node *n) const;
     int sum(Node *n) const;
     int count(Node *n) const;
+    void replace(Node* u, Node* v);
 
     // these should be used by getPredecessor and getSuccessor, and ONE of them should be used by remove
     Node* getSuccessorNode(int value) const;   // returns the Node containing the successor of the given value

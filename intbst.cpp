@@ -1,6 +1,6 @@
 // intbst.cpp
 // Implements class IntBST
-// YOUR NAME(S), DATE
+// Dan Iacob, 1/30/26
 
 #include "intbst.h"
 
@@ -137,7 +137,7 @@ int IntBST::count(Node *n) const {
 // Whenever you call this method from somewhere else, pass it
 // the root node as "n"
 IntBST::Node* IntBST::getNodeFor(int value, Node* n) const{
-	if(!n) {
+	if(!n){
                 return nullptr;
         }
 	if(n->info == value) {
@@ -156,26 +156,143 @@ bool IntBST::contains(int value) const {
 
 // returns the Node containing the predecessor of the given value
 IntBST::Node* IntBST::getPredecessorNode(int value) const{
-    return NULL; // REPLACE THIS NON-SOLUTION
+    	/*
+	Node* n = getNodeFor(value, root);
+	if(!n) {
+		return nullptr;
+	}
+	vector<int> list;
+	getPredecessorNode(value, n, list);
+	int spot = -1;
+	for(int i = 0; i < list.size(); i++){
+		if(list[i] == value){
+			spot = i;
+			break;
+		}
+	}
+	if(spot > 0){
+		return getNodeFor(list[spot - 1], root);
+	} else{
+		return nullptr;
+	}
+	*/
+	Node* n = getNodeFor(value, root);
+	if (!n){
+		return nullptr;
+	}
+	if (n->left) {
+        	n = n->left;
+        	while (n->right){
+			n = n->right;
+		}
+        	return n;
+	}
+	Node* par = n->parent;
+	while (par && n == par->left) {
+	        n = par;
+	        par = par->parent;
+	}
+	return par;
 }
-
+/*
+void IntBST::getPredecessorNode(int value, Node* n, vector<int> &list) const{
+	if(!n){
+		return;
+	}
+	getPredecessorNode(value, n->left, list);
+	list.push_back(n->info);
+	getPredecessorNode(value, n->right, list);
+}
+*/
 // returns the predecessor value of the given value or 0 if there is none
 int IntBST::getPredecessor(int value) const{
-    return -1; // REPLACE THIS NON-SOLUTION
+	Node* pred = getPredecessorNode(value);
+	if(pred) {
+		return pred->info;
+	} else {
+		return 0;
+	}
 }
 
 // returns the Node containing the successor of the given value
 IntBST::Node* IntBST::getSuccessorNode(int value) const{
-    return NULL; // REPLACE THIS NON-SOLUTION
+	Node* n = getNodeFor(value, root);
+        if (!n){
+                return nullptr;
+        }
+        if (n->right){
+                n = n->right;
+                while (n->left){
+                        n = n->left;
+                }
+                return n;
+        }
+        Node* par = n->parent;
+        while (par && n == par->right) {
+                n = par;
+                par = par->parent;
+        }
+        return par;
 }
 
 // returns the successor value of the given value or 0 if there is none
 int IntBST::getSuccessor(int value) const{
-    return -1; // REPLACE THIS NON-SOLUTION
+	Node* succ = getSuccessorNode(value);
+	if(succ) {
+                return succ->info;
+        } else {
+                return 0;
+        }
 }
 
 // deletes the Node containing the given value from the tree
 // returns true if the node exist and was deleted or false if the node does not exist
 bool IntBST::remove(int value){
-    return false; // REPLACE THIS NON-SOLUTION
+	Node* a = getNodeFor(value, root);
+	if(!a){
+		return false;
+	}
+	if(a->left == nullptr){
+		replace(a, a->right);
+		delete a;
+		return true;
+	}
+
+	if(a->right == nullptr){
+		replace(a, a->left);
+		delete a;
+		return true;
+	}
+
+	Node* temp = a->right;
+	while(temp && temp->left){
+		temp = temp->left;
+	}
+	Node* b = temp;
+
+	if(b->parent != a){
+		replace(a, a->right);
+		b->right = a->right;
+		b->right->parent = b;
+	}
+
+	replace(a, b);
+	b->left = a->left;
+	b->left->parent = b;
+
+	delete a;
+	return true;	
+}
+
+void IntBST::replace(Node* c, Node* d) {
+	if(c->parent == nullptr){
+		root = d;
+	}else if (c == c->parent->left){
+		c->parent->left = d;
+	}else{
+		c->parent->right = d;
+	}
+	if(d != nullptr){
+		d->parent = d->parent;
+	}
 }
